@@ -91,21 +91,48 @@ fn main() {
     */
 
     fn exercice_two() {
+        let secret_number = rand::thread_rng().gen_range(15..=120);
+        let mut attemps: u32 = 0;
 
+        println!("Secret number is {}", secret_number);
 
+        loop {
+            attemps += 1;
+            println!("");
+            println!("Propose a number");
 
+            let mut guess = String::new();
 
+            io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read the line");
 
+            let guess: u32 = match guess.trim().parse() {
+                Ok(num) => num,
+                Err(_) => {
+                    println!("Propose a valid number");
+                    continue;
+                }
+            };
 
+            println!("You choose {}", &guess);
 
+            match guess.cmp(&secret_number) {
+                Ordering::Less => println!("Too small!"),
+                Ordering::Greater => println!("Too big!"),
+                Ordering::Equal => {
+                    println!("");
+                    println!("You win!");
+                    println!("Secret number was {}", &secret_number);
+                    break;
+                }
+            }
+        }
 
-
-
+        println!("You found in {} attemps", attemps);
     }
 
-
-
-
+    // exercice_two();
 
 
     /*

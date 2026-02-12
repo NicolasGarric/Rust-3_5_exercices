@@ -191,4 +191,119 @@ fn main() {
     Objectif : reprendre un maximum d’éléments des chapitres 2 et 3 :
     - lecture utilisateur, conversions de types, conditions, répétition, fonctions éventuelles, calculs, état mutable, affichage.
     */
+
+    fn exercice_three() {
+    // État de session
+    let mut sum: i32 = 0;
+    let mut product: i32 = 1; // valeur initiale cohérente pour une multiplication
+    let mut count_add: i32 = 0;
+    let mut count_mul: i32 = 0;
+
+    println!("Mode session");
+
+    loop {
+
+        println!("Choose option between:"); println!(""); println!("add X"); println!("mul X"); println!("stats"); println!("table N"); println!("reset"); println!("quit"); println!(""); println!("");
+
+        // Lire une ligne
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Can't read input line");
+
+        // Nettoyer espaces début/fin
+        let line = input.trim();
+
+        // Ligne vide => commande invalide
+        if line.is_empty() {
+            println!("Commande invalide");
+            continue;
+        }
+
+        // Découper en (commande, reste) au premier espace
+        let (command, rest) = match line.split_once(' ') {
+            Some((c, r)) => (c, r.trim()),
+            None => (line, ""),
+        };
+
+        // Dispatcher sur la commande
+        if command == "add" {
+            if rest.is_empty() {
+                println!("Entrée invalide");
+                continue;
+            }
+
+            let x: i32 = match rest.parse() {
+                Ok(v) => v,
+                Err(_) => {
+                    println!("Entrée invalide");
+                    continue;
+                }
+            };
+
+            sum += x;
+            count_add += 1;
+            println!("OK");
+        } else if command == "mul" {
+            if rest.is_empty() {
+                println!("Entrée invalide");
+                continue;
+            }
+
+            let x: i32 = match rest.parse() {
+                Ok(v) => v,
+                Err(_) => {
+                    println!("Entrée invalide");
+                    continue;
+                }
+            };
+
+            product *= x;
+            count_mul += 1;
+            println!("OK");
+        } else if command == "stats" {
+            println!("sum = {}", sum);
+            println!("product = {}", product);
+            println!("add = {}", count_add);
+            println!("mul = {}", count_mul);
+        } else if command == "table" {
+            if rest.is_empty() {
+                println!("Entrée invalide");
+                continue;
+            }
+
+            let n: i32 = match rest.parse() {
+                Ok(v) => v,
+                Err(_) => {
+                    println!("Entrée invalide");
+                    continue;
+                }
+            };
+
+            if n < 2 || n > 9 {
+                println!("Hors intervalle");
+                continue;
+            }
+
+            let mut i = 1;
+            while i <= 10 {
+                println!("{} x {} = {}", n, i, n * i);
+                i += 1;
+            }
+        } else if command == "reset" {
+            sum = 0;
+            product = 1;
+            count_add = 0;
+            count_mul = 0;
+            println!("OK");
+        } else if command == "quit" {
+            println!("fin");
+            break;
+        } else {
+            println!("Commande invalide");
+        }
+    }
+    }
+
+    exercice_three();
 }
